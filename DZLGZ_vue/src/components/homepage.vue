@@ -4,9 +4,9 @@
     <div class="navbar" v-if="showNavbar">
       <div class="navbar-container">
         <div class="nav-links">
-          <router-link :to="getLink('/visualAll')" class="nav-link" @click="checkAuth('/visualAll')">情感训练</router-link>
-          <router-link :to="getLink('/chinaMap')" class="nav-link" @click="checkAuth('/chinaMap')">行为训练</router-link>
-          <router-link :to="getLink('/retrieval')" class="nav-link" @click="checkAuth('/retrieval')">综合训练</router-link>
+          <router-link :to="getLink('/Emotional')" class="nav-link" @click="checkAuth('/Emotional')">情感训练</router-link>
+          <router-link :to="getLink('/Behavioral')" class="nav-link" @click="checkAuth('/Behavioral')">行为训练</router-link>
+          <router-link :to="getLink('/Comprehensive')" class="nav-link" @click="checkAuth('/Comprehensive')">综合训练</router-link>
           <router-link :to="getLink('/forum')" class="nav-link" @click="checkAuth('/forum')">云社区</router-link>
           <router-link v-if="!user" to="/login" class="nav-link">登录</router-link>
           <router-link v-if="user"  to="/usercenter" class="nav-link">用户中心</router-link>

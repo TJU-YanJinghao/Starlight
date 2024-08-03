@@ -3,12 +3,12 @@ import Router from "vue-router";
 import homepage from "@/components/homepage";
 import LoginPage from "@/components/LoginPage";
 import RegisterPage from "@/components/RegisterPage";
-import retrieval from "@/components/retrieval";
+import Comprehensive from "@/components/Comprehensive";
 import forum from "@/components/forum";
 import usercenter from "@/components/Usercenter";
-import visualAll from "@/components/visualAll";
+import Emotional from "@/components/Emotional";
 import visual from "@/components/visual";
-import chinaMap from "@/components/chinaMap";
+import Behavioral from "@/components/Behavioral";
 
 Vue.use(Router);
 
@@ -35,9 +35,9 @@ export default new Router({
       component: forum,
     },
     {
-      path: "/retrieval",
-      name: "retrieval",
-      component: retrieval,
+      path: "/Comprehensive",
+      name: "Comprehensive",
+      component: Comprehensive,
     },
     {
       path: "/usercenter",
@@ -45,9 +45,9 @@ export default new Router({
       component: usercenter,
     },
     {
-      path: "/visualAll",
-      name: "visualAll",
-      component: visualAll,
+      path: "/Emotional",
+      name: "Emotional",
+      component: Emotional,
     },
     {
       path: "/visual",
@@ -55,9 +55,9 @@ export default new Router({
       component: visual,
     },
     {
-      path: "/chinaMap",
-      name: "chinaMap",
-      component: chinaMap,
+      path: "/Behavioral",
+      name: "Behavioral",
+      component: Behavioral,
     }
   ],
 });
