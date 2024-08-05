@@ -14,9 +14,9 @@
       </div>
     </div>
 
-    <!-- <div class="manual-login">
+    <div class="manual-login">
       <button @click="manualLogin">手动设置为已登录</button>
-    </div> -->
+    </div>
 
     <!-- 背景图容器，使用CSS背景图 -->
     <div class="background-image"></div>
