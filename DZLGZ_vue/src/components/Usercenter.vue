@@ -8,16 +8,23 @@
     <div class="content">
       <div class="sidebar">
         <ul>
-          <li><a @click="showSection('comments')">历史评论</a></li>
-          <li><a @click="showSection('changePassword')">修改密码</a></li>
-          <li><a @click="showSection('feedback')">使用反馈</a></li>
-          <li><a @click="logout" class="logout-link">登出</a></li>
+          <li><a @click="showSection('comments')">个人信息</a></li>
+          <li><a @click="showSection('changePassword')">编辑</a></li>
+          <li><a @click="showSection('changePassword')">登出</a></li>
         </ul>
       </div>
       <div class="main">
         <div v-show="currentSection === 'comments'" class="section">
-          <h2>历史评论</h2>
-          <p style="font-size: 20px;" v-if="comments.length === 0">暂无评论。</p>
+          <h2>昵称：Star</h2>
+          <p style="font-size: 20px;" v-if="comments.length === 0">性别：男 年龄：9岁 </p>
+          <p style="font-size: 20px;margin-bottom: 30px;" v-if="comments.length === 0">姓名：马小 年级：小学五年级 </p>
+          <p style="font-size: 20px;" v-if="comments.length === 0">喜欢的形象：</p>
+          <p style="font-size: 20px;margin-bottom: 30px;" v-if="comments.length === 0">小浣熊为主体，毛色为橙色，穿着蓝色的帽衫，戴着蓝色的帽子。 </p>
+          <p style="font-size: 20px;" v-if="comments.length === 0">默认背景：</p>
+          <p style="font-size: 20px;margin-bottom: 30px;" v-if="comments.length === 0">下雨的儿童游乐场。 </p>
+          <p style="font-size: 20px;" v-if="comments.length === 0">默认情节：</p>
+          <p style="font-size: 20px;" v-if="comments.length === 0">孩子和同学王明约好了周末一起去游乐场玩，但是周末突然下了暴雨，无法再去游乐场。 </p>
+          <img src="../../../UI/head.jpg" alt="Profile Image" style="width: 200px; height: 200px; border-radius: 50%; position: absolute; top: 50px; right: 50px;">
            <ul class="comments-list">
                   <li v-for="comment in comments" :key="comment.id" class="comment-item">
                     <p class="comment-text">{{ comment.content }}</p>
