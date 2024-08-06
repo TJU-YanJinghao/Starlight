@@ -5,7 +5,7 @@
       src="../../static/background.png"
     />
     <span class="text text_3 pos_2" @click="goToHomepage">《主页</span>
-    <span class="text text_2 pos">读者论坛</span>
+    <span class="text text_2 pos">云社区</span>
     <div class="flex-col section pos_3">
       <div class="flex-row group">
         <img
@@ -15,7 +15,7 @@
         <input
           style="caret-color: auto"
           type="text"
-          placeholder="搜索评论内容..."
+          placeholder="搜索场景、情节..."
           v-model="searchQuery"
           @keyup.enter="searchComments"
           class="ml-20 group_2 input"
@@ -50,11 +50,11 @@
           style="caret-color: auto"
           type="text"
           v-model="newComment"
-          placeholder="发布评论..."
+          placeholder="发布场景、情节..."
           class="group_6 input"
           @keyup.enter="postComment"
         />
-        <span class="text_7" @click="postComment">评论</span>
+        <span class="text_7" @click="postComment">发布</span>
       </div>
     </div>
   </div>
@@ -738,7 +738,7 @@ word-break: break-all;
 }
 .section {
   padding: 3.81rem 10.19rem 3rem;
-  background-image: url("../../static/bgColor.png");
+  background-image: url("../../static/green.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }

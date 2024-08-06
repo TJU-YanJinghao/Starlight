@@ -20,7 +20,7 @@
           <p style="font-size: 20px;margin-bottom: 30px;" v-if="comments.length === 0">姓名：马小 年级：小学五年级 </p>
           <p style="font-size: 20px;" v-if="comments.length === 0">喜欢的形象：</p>
           <p style="font-size: 20px;margin-bottom: 30px;" v-if="comments.length === 0">小浣熊为主体，毛色为橙色，穿着蓝色的帽衫，戴着蓝色的帽子。 </p>
-          <p style="font-size: 20px;" v-if="comments.length === 0">默认背景：</p>
+          <p style="font-size: 20px;" v-if="comments.length === 0">默认场景：</p>
           <p style="font-size: 20px;margin-bottom: 30px;" v-if="comments.length === 0">下雨的儿童游乐场。 </p>
           <p style="font-size: 20px;" v-if="comments.length === 0">默认情节：</p>
           <p style="font-size: 20px;" v-if="comments.length === 0">孩子和同学王明约好了周末一起去游乐场玩，但是周末突然下了暴雨，无法再去游乐场。 </p>
