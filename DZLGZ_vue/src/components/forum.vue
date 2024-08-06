@@ -854,4 +854,25 @@ word-break: break-all;
    height: calc(100vh - 20rem);
   overflow-y: auto;
 }
+.page {
+  background-color: #ffffff;
+  width: 100%;
+  height: 100vh; /* 设置为视口高度 */
+  overflow: hidden; /* 避免全局出现滚动条 */
+}
+
+.section {
+  padding: 3.81rem 10.19rem 3rem;
+  background-image: url("../../static/green.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  height: calc(100vh - 7.94rem); /* 确保 section 高度合适 */
+  overflow: hidden; /* 移除 section 内部滚动条 */
+}
+
+.comments-section {
+  max-height: calc(100vh - 20rem); /* 限制最大高度 */
+  overflow-y: auto; /* 仅在 comments-section 上启用滚动条 */
+}
+
 </style>
