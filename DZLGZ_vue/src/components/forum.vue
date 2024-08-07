@@ -21,6 +21,30 @@
           class="ml-20 group_2 input"
         />
       </div>
+      <div>
+<p style="text-align: left; margin-left: 120px;margin-right: 120px; margin-bottom: 0; background-color: white;">1.</p>
+<p style="text-align: left; margin-left: 120px; margin-right: 120px;margin-top: 0; margin-bottom: 0; background-color: white;">放学后的操场</p>
+<p style="text-align: left; margin-left: 120px; margin-right: 120px;margin-top: 0; margin-bottom: 0; background-color: white;">孩子的同学王明邀请孩子周末参加自己的生日派对,让孩子从中感受友谊和感动。</p>
+
+      <p style="text-align: left; margin-left: 120px;margin-right: 120px; margin-bottom: 0;background-color: white;">2.</p>
+      <p style="text-align: left; margin-left: 120px;margin-right: 120px; margin-top: 0;margin-bottom: 0;background-color: white;">下雨的儿童游乐场</p>
+      <p style="text-align: left; margin-left: 120px;margin-right: 120px; margin-top: 0;margin-bottom: 0;background-color: white;">孩子和同学王明约好了周末一起去游乐场玩，但是周末突然下了暴雨，无法再去游乐场。让孩子从中感受计划失败的失望和难过。</p>
+      <p style="text-align: left; margin-left: 120px;margin-right: 120px; margin-bottom: 0;background-color: white;">3.</p>
+      <p style="text-align: left; margin-left: 120px;margin-right: 120px; margin-top: 0;margin-bottom: 0;background-color: white;">清晨的教室</p>
+      <p style="text-align: left; margin-left: 120px;margin-right: 120px; margin-top: 0;margin-bottom: 0;background-color: white;">孩子参加舞蹈社团的选拔，没有通过考试。朋友张明明，安慰李丽，让孩子从中感受友谊和感动。</p>
+      </div>
+      <div class="flex-row items-center group_5" style="margin-top: 200px;">
+        <span class="text_8">+</span>
+        <input
+          style="caret-color: auto"
+          type="text"
+          v-model="newComment"
+          placeholder="发布场景、情节..."
+          class="group_6 input"
+          @keyup.enter="postComment"
+        />
+        <span class="text_7" @click="postComment">发布</span>
+      </div>
       <div class="comments-section">
         <div
           class="flex-row items-center group_3"
