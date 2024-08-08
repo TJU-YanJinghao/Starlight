@@ -121,8 +121,8 @@ export default {
       '。画图：喜欢的形象'+this.formData.favoriteImage+
       '。画图：背景'+this.formData.background+
       '。故事情节是：'+this.formData.story+
-      '。请你扮演'+this.formData.name+'的角色，让孩子从中感受'+this.formData.emotional+'。';
-      this.messages.push({ id: this.id++, text: buffer, type: 'set',avatar: this.userAvatar });
+      '。让孩子从中感受'+this.formData.emotional+'。';
+      // this.messages.push({ id: this.id++, text: buffer, type: 'set',avatar: this.userAvatar });
       this.scrollToBottom(); // 新增消息后滚动到底部
       this.isLoading = true; // 显示等待动画
 
@@ -289,10 +289,10 @@ export default {
         // }
         this.messages.push({ id: this.id++, text: resultText, type: 'received', avatar: this.modelAvatar });
         this.scrollToBottom(); // 新增消息后滚动到底部
-        for(const img_url of img_urls) {
-          this.messages.push({ id: this.id++, url: img_url, type: 'image' });
-          this.scrollToBottom(); // 新增消息后滚动到底部
-        }
+        // for(const img_url of img_urls) {
+        //   this.messages.push({ id: this.id++, url: img_url, type: 'image' });
+        //   this.scrollToBottom(); // 新增消息后滚动到底部
+        // }
       } catch (error) {
         console.error('There was a problem with your fetch operation:', error);
       } finally {
@@ -494,7 +494,7 @@ export default {
 .output-container {
   margin-top: 10px; /* 调整输入框的顶部间距 */
   width: 1600px;
-  height: 600px;
+  height: 680px;
   border: 1px solid #ccc;
   overflow-y: auto;
   padding: 10px;
