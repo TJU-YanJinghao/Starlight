@@ -20,19 +20,19 @@
         </div>
         <div class="form-group">
           <label>身份：</label>
-          <input type="text" v-model="formData.identity" />
+          <textarea v-model="formData.identity" ></textarea>
         </div>
         <div class="form-group">
           <label>喜欢的形象：</label>
-          <input type="text" v-model="formData.favoriteImage" />
+          <textarea v-model="formData.favoriteImage" ></textarea>
         </div>
         <div class="form-group">
           <label>背景：</label>
-          <input type="text" v-model="formData.background" />
+          <textarea v-model="formData.background" ></textarea>
         </div>
         <div class="form-group">
           <label>故事情节：</label>
-          <input type="text" v-model="formData.story" />
+          <textarea v-model="formData.story" ></textarea>
         </div>
         <div class="button-group">
           <button type="button" @click="handleReset">默认</button>
@@ -40,28 +40,29 @@
         </div>
       </form>
     </div>
-
-    <div v-else class="input-container">
-      <textarea
-        v-model="text"
-        placeholder="请在此处输入……"
-        class="input-textarea"
-        @keydown.enter="handleEnterKey"
-      ></textarea>
-      <button
-        class="send-button"
-        @click="handleClick"
-      >
-        发送
-      </button>
-    </div>
-    <div class="output-container">
-      <div v-for="(message, index) in messages" :key="message.id" :ref="'message-' + index" :class="['message', message.type]">
-        <div class="message-text" v-if="message.type === 'sent'">{{ message.text }}</div>
-        <div class="message-text" v-if="message.type === 'received'">{{ message.text }}</div>
-        <img class="message-image" v-if="message.type === 'image'" :src="message.url"  />
+    <div v-else>
+      <div class="input-container">
+        <textarea
+          v-model="text"
+          placeholder="请在此处输入……"
+          class="input-textarea"
+          @keydown.enter="handleEnterKey"
+        ></textarea>
+        <button
+          class="send-button"
+          @click="handleClick"
+        >
+          发送
+        </button>
       </div>
-      <div v-if="isLoading" class="loading-spinner"></div> <!-- 等待动画 -->
+      <div class="output-container">
+        <div v-for="(message, index) in messages" :key="message.id" :ref="'message-' + index" :class="['message', message.type]">
+          <div class="message-text" v-if="message.type === 'sent'">{{ message.text }}</div>
+          <div class="message-text" v-if="message.type === 'received'">{{ message.text }}</div>
+          <img class="message-image" v-if="message.type === 'image'" :src="message.url"  />
+        </div>
+        <div v-if="isLoading" class="loading-spinner"></div> <!-- 等待动画 -->
+      </div>
     </div>
   </div>
 </template>
@@ -327,8 +328,14 @@ export default {
   padding: 20px;
 }
 
-.form-group {
-  margin-bottom: 20px;
+.form-group textarea {
+  width: 100%; /* 确保文本域宽度为100% */
+  padding: 10px; /* 增加内边距 */
+  box-sizing: border-box;
+  height: auto; /* 自动调整高度 */
+  min-height: 50px; /* 最小高度 */
+  resize: vertical; /* 允许用户垂直调整大小 */
+  white-space: pre-wrap; /* 保留空白字符并自动换行 */
 }
 
 .form-group label {
@@ -338,9 +345,10 @@ export default {
 
 .form-group input[type="text"],
 .form-group input[type="number"] {
-  width: 100%;
-  padding: 5px;
+  width: 100%; /* 确保输入框宽度为100% */
+  padding: 10px; /* 增加内边距 */
   box-sizing: border-box;
+  height: 40px; /* 调整输入框的高度 */
 }
 
 .button-group {
