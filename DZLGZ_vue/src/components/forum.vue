@@ -5,7 +5,7 @@
       src="../../static/background.png"
     />
     <span class="text text_3 pos_2" @click="goToHomepage">《主页</span>
-    <span class="text text_2 pos">读者论坛</span>
+    <span class="text text_2 pos">云社区</span>
     <div class="flex-col section pos_3">
       <div class="flex-row group">
         <img
@@ -15,11 +15,35 @@
         <input
           style="caret-color: auto"
           type="text"
-          placeholder="搜索评论内容..."
+          placeholder="搜索场景、情节..."
           v-model="searchQuery"
           @keyup.enter="searchComments"
           class="ml-20 group_2 input"
         />
+      </div>
+      <div>
+<p style="text-align: left; margin-left: 120px;margin-right: 120px; margin-bottom: 0; background-color: white;">1.</p>
+<p style="text-align: left; margin-left: 120px; margin-right: 120px;margin-top: 0; margin-bottom: 0; background-color: white;">放学后的操场</p>
+<p style="text-align: left; margin-left: 120px; margin-right: 120px;margin-top: 0; margin-bottom: 0; background-color: white;">孩子的同学王明邀请孩子周末参加自己的生日派对,让孩子从中感受友谊和感动。</p>
+
+      <p style="text-align: left; margin-left: 120px;margin-right: 120px; margin-bottom: 0;background-color: white;">2.</p>
+      <p style="text-align: left; margin-left: 120px;margin-right: 120px; margin-top: 0;margin-bottom: 0;background-color: white;">下雨的儿童游乐场</p>
+      <p style="text-align: left; margin-left: 120px;margin-right: 120px; margin-top: 0;margin-bottom: 0;background-color: white;">孩子和同学王明约好了周末一起去游乐场玩，但是周末突然下了暴雨，无法再去游乐场。让孩子从中感受计划失败的失望和难过。</p>
+      <p style="text-align: left; margin-left: 120px;margin-right: 120px; margin-bottom: 0;background-color: white;">3.</p>
+      <p style="text-align: left; margin-left: 120px;margin-right: 120px; margin-top: 0;margin-bottom: 0;background-color: white;">清晨的教室</p>
+      <p style="text-align: left; margin-left: 120px;margin-right: 120px; margin-top: 0;margin-bottom: 0;background-color: white;">孩子参加舞蹈社团的选拔，没有通过考试。朋友张明明，安慰李丽，让孩子从中感受友谊和感动。</p>
+      </div>
+      <div class="flex-row items-center group_5" style="margin-top: 200px;">
+        <span class="text_8">+</span>
+        <input
+          style="caret-color: auto"
+          type="text"
+          v-model="newComment"
+          placeholder="发布场景、情节..."
+          class="group_6 input"
+          @keyup.enter="postComment"
+        />
+        <span class="text_7" @click="postComment">发布</span>
       </div>
       <div class="comments-section">
         <div
@@ -50,11 +74,11 @@
           style="caret-color: auto"
           type="text"
           v-model="newComment"
-          placeholder="发布评论..."
+          placeholder="发布场景、情节..."
           class="group_6 input"
           @keyup.enter="postComment"
         />
-        <span class="text_7" @click="postComment">评论</span>
+        <span class="text_7" @click="postComment">发布</span>
       </div>
     </div>
   </div>
@@ -738,7 +762,7 @@ word-break: break-all;
 }
 .section {
   padding: 3.81rem 10.19rem 3rem;
-  background-image: url("../../static/bgColor.png");
+  background-image: url("../../static/green.png");
   background-size: 100% 100%;
   background-repeat: no-repeat;
 }
@@ -854,4 +878,25 @@ word-break: break-all;
    height: calc(100vh - 20rem);
   overflow-y: auto;
 }
+.page {
+  background-color: #ffffff;
+  width: 100%;
+  height: 100vh; /* 设置为视口高度 */
+  overflow: hidden; /* 避免全局出现滚动条 */
+}
+
+.section {
+  padding: 3.81rem 10.19rem 3rem;
+  background-image: url("../../static/green.png");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  height: calc(100vh - 7.94rem); /* 确保 section 高度合适 */
+  overflow: hidden; /* 移除 section 内部滚动条 */
+}
+
+.comments-section {
+  max-height: calc(100vh - 20rem); /* 限制最大高度 */
+  overflow-y: auto; /* 仅在 comments-section 上启用滚动条 */
+}
+
 </style>

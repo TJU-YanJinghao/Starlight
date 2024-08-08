@@ -125,7 +125,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-image: url("../../static/00-背景图-无水印版.png");
+  background-image: url("../../static/background.png");
   background-size: cover;
   background-position: bottom;
   filter: blur(1.5px);
@@ -141,7 +141,7 @@ export default {
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3); /* 更明显的悬空阴影效果 */
   border-radius: 0; /* 边界改为直角 */
   text-align: center;
-  background-image: url("../../static/01-登录-背景图.png"); /* 背景纸纹理 */
+  background-image: url("../../static/green.png"); /* 背景纸纹理 */
   background-size: cover;
   border: none; /* 取消边框 */
 }
