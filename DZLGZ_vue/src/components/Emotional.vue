@@ -55,11 +55,14 @@
           发送
         </button>
       </div>
-      <div class="output-container">
+      <div class="output-container" :style="{'background-image': 'url(' + backgroundUrl + ')'}">
         <div v-for="(message, index) in messages" :key="message.id" :ref="'message-' + index" :class="['message', message.type]">
-          <div class="message-text" v-if="message.type === 'sent'">{{ message.text }}</div>
-          <div class="message-text" v-if="message.type === 'received'">{{ message.text }}</div>
-          <img class="message-image" v-if="message.type === 'image'" :src="message.url"  />
+          <img :src=message.avatar class="message-avatar" />
+          <div class="message-content">
+            <div class="message-text" v-if="message.type === 'sent'">{{ message.text }}</div>
+            <div class="message-text" v-if="message.type === 'received'">{{ message.text }}</div>
+          <!-- <img class="message-image" v-if="message.type === 'image'" :src="message.url"  /> -->
+          </div>
         </div>
         <div v-if="isLoading" class="loading-spinner"></div> <!-- 等待动画 -->
       </div>
@@ -84,6 +87,9 @@ export default {
       text: '',
       messages: [],
       isLoading: false, // 用于控制等待动画显示
+      backgroundUrl: '', // 对话框背景图像的URL
+      modelAvatar: '',
+      userAvatar: "../../../UI/head.jpg", // 用户头像的URL
       id: 0
     };
   },
@@ -101,6 +107,7 @@ export default {
         background: '',
         story: ''
       };
+      this.userAvatar="../../../UI/head.jpg";
     },
     async handleSubmit() {
       console.log('Submitted data:', this.formData);
@@ -174,21 +181,26 @@ export default {
           }
         }
 
-        this.messages.push({ id: this.id++, text: resultText, type: 'received' });
-        this.scrollToBottom(); // 新增消息后滚动到底部
-        for(const img_url of img_urls) {
-          this.messages.push({ id: this.id++, url: img_url, type: 'image' });
-          this.scrollToBottom(); // 新增消息后滚动到底部
-        }
+        // this.messages.push({ id: this.id++, text: resultText, type: 'received' });
+        // this.scrollToBottom(); // 新增消息后滚动到底部
+        // for(const img_url of img_urls) {
+        //   this.messages.push({ id: this.id++, url: img_url, type: 'image' });
+        //   this.scrollToBottom(); // 新增消息后滚动到底部
+        // }
+        const imageUrl = img_urls[1];
+        this.backgroundUrl = imageUrl;
+        const avatarUrl = img_urls[0];
+        this.modelAvatar = avatarUrl;
       } catch (error) {
         console.error('There was a problem with your fetch operation:', error);
       } finally {
         this.isLoading = false; // 隐藏等待动画
       }
     },
+
     async handleClick() {
       if (this.text.trim() === '') return;
-      this.messages.push({ id: this.id++, text: this.text, type: 'sent' });
+      this.messages.push({ id: this.id++, text: this.text, type: 'sent', avatar: this.userAvatar });
       this.scrollToBottom(); // 新增消息后滚动到底部
       this.isLoading = true; // 显示等待动画
 
@@ -270,7 +282,7 @@ export default {
         //     }
         //   }
         // }
-        this.messages.push({ id: this.id++, text: resultText, type: 'received' });
+        this.messages.push({ id: this.id++, text: resultText, type: 'received', avatar: this.modelAvatar });
         this.scrollToBottom(); // 新增消息后滚动到底部
         for(const img_url of img_urls) {
           this.messages.push({ id: this.id++, url: img_url, type: 'image' });
@@ -326,16 +338,11 @@ export default {
   margin: 0 auto;
   border: 1px solid #000;
   padding: 20px;
+  background-color: rgba(255, 255, 255, 0.8); /* 使表单背景半透明 */
 }
 
-.form-group textarea {
-  width: 100%; /* 确保文本域宽度为100% */
-  padding: 10px; /* 增加内边距 */
-  box-sizing: border-box;
-  height: auto; /* 自动调整高度 */
-  min-height: 50px; /* 最小高度 */
-  resize: vertical; /* 允许用户垂直调整大小 */
-  white-space: pre-wrap; /* 保留空白字符并自动换行 */
+.form-group {
+  margin-bottom: 20px;
 }
 
 .form-group label {
@@ -344,11 +351,15 @@ export default {
 }
 
 .form-group input[type="text"],
-.form-group input[type="number"] {
-  width: 100%; /* 确保输入框宽度为100% */
+.form-group input[type="number"],
+.form-group textarea {
+  width: 100%; /* 确保输入框和文本域宽度为100% */
   padding: 10px; /* 增加内边距 */
   box-sizing: border-box;
-  height: 40px; /* 调整输入框的高度 */
+  height: auto; /* 自动调整高度 */
+  min-height: 40px; /* 最小高度 */
+  resize: vertical; /* 允许用户垂直调整大小 */
+  white-space: pre-wrap; /* 保留空白字符并自动换行 */
 }
 
 .button-group {
@@ -364,6 +375,9 @@ export default {
 .chat-container {
   width: 600px;
   margin: 0 auto;
+  margin-top: 50px; /* 调整对话框的顶部间距 */
+  background-size: cover; /* 确保背景图片覆盖整个容器 */
+  background-position: center; /* 确保背景图片在容器中居中 */
 }
 
 .messages {
@@ -371,10 +385,12 @@ export default {
   border: 1px solid #ccc;
   overflow-y: auto;
   padding: 10px;
+  background-color: rgba(255, 255, 255, 0.8); /* 使对话框背景半透明 */
 }
 
 .message {
   display: flex;
+  align-items: flex-start; /* 对齐消息和头像 */
   margin-bottom: 10px;
 }
 
@@ -386,19 +402,30 @@ export default {
   justify-content: flex-start;
 }
 
+.message-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.message-content {
+  max-width: calc(100% - 50px); /* 留出头像的空间 */
+}
+
 .message-text {
-  max-width: 60%;
+  max-width: 100%;
   padding: 10px;
   border-radius: 10px;
   background-color: #f1f1f1;
   border: 1px solid #ccc;
 }
 
-.message-image {
+/* .message-image {
   max-width: 60%;
   border-radius: 10px;
   border: 1px solid #ccc;
-}
+} */
 
 .message.user .message-text {
   background-color: #dcf8c6;
@@ -409,13 +436,40 @@ export default {
 }
 
 .input-container {
-  margin-top: 70px; /* 调整输入框的顶部间距 */
   display: flex;
   width: 100%;
-  /* margin-bottom: 10px; */
+  margin-top: 70px; /* 调整输入框的顶部间距 */
 }
 
 .input-textarea {
+  flex-grow: 1;
+  height: 60px; /* 调整输入框的高度 */
+  width: calc(100% - 80px); /* 调整输入框的宽度，留出按钮的位置 */
+  padding: 10px;
+  resize: none;
+  border: 1px solid #ccc;
+}
+
+.send-button {
+  width: 80px; /* 调整按钮宽度以配合输入框 */
+  margin-left: 10px;
+  padding: 10px; /* 调整按钮的内边距 */
+  border: 1px solid #ccc;
+  background-color: white;
+  cursor: pointer;
+}
+
+.loading-spinner {
+  border: 8px solid #f3f3f3;
+  border-top: 8px solid #3498db;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 2s linear infinite;
+  margin: 20px auto;
+}
+
+/* .input-textarea {
   flex-grow: 1;
   height: 40px;
   padding: 5px;
@@ -430,16 +484,7 @@ export default {
   border: 1px solid #ccc;
   background-color: white;
   cursor: pointer;
-}
-
-.send-button {
-  width: 60px;
-  margin-left: 10px;
-  padding: 5px;
-  border: 1px solid #ccc;
-  background-color: white;
-  cursor: pointer;
-}
+} */
 
 .output-container {
   margin-top: 10px; /* 调整输入框的顶部间距 */
@@ -473,11 +518,11 @@ export default {
   border: 1px solid #ccc;
 }
 
-.message-image {
+/* .message-image {
   max-width: 60%;
   border-radius: 10px;
   border: 1px solid #ccc;
-}
+} */
 
 .message.sent .message-text {
   background-color: #dcf8c6;
@@ -506,7 +551,7 @@ export default {
   cursor: pointer;
 }
 
-/* 等待动画 */
+/* 等待动画
 .loading-spinner {
   border: 8px solid #f3f3f3;
   border-top: 8px solid #3498db;
@@ -515,7 +560,7 @@ export default {
   height: 50px;
   animation: spin 2s linear infinite;
   margin: 20px auto;
-}
+} */
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
