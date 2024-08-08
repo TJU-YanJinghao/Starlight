@@ -34,6 +34,10 @@
           <label>故事情节：</label>
           <textarea v-model="formData.story" ></textarea>
         </div>
+        <div class="form-group">
+          <label>感受：</label>
+          <textarea v-model="formData.emotional" ></textarea>
+        </div>
         <div class="button-group">
           <button type="button" @click="handleReset">默认</button>
           <button type="submit">确定</button>
@@ -58,11 +62,10 @@
       <div class="output-container" :style="{'background-image': 'url(' + backgroundUrl + ')'}">
         <div v-for="(message, index) in messages" :key="message.id" :ref="'message-' + index" :class="['message', message.type]">
           <img :src=message.avatar class="message-avatar" />
-          <div class="message-content">
+          <div class="message-content"></div>
             <div class="message-text" v-if="message.type === 'sent'">{{ message.text }}</div>
             <div class="message-text" v-if="message.type === 'received'">{{ message.text }}</div>
           <!-- <img class="message-image" v-if="message.type === 'image'" :src="message.url"  /> -->
-          </div>
         </div>
         <div v-if="isLoading" class="loading-spinner"></div> <!-- 等待动画 -->
       </div>
@@ -82,7 +85,8 @@ export default {
         identity: '',
         favoriteImage: '',
         background: '',
-        story: ''
+        story: '',
+        emotional: ''
       },      
       text: '',
       messages: [],
@@ -105,19 +109,20 @@ export default {
         identity: '',
         favoriteImage: '',
         background: '',
-        story: ''
+        story: '',
+        emotional: ''
       };
       this.userAvatar="../../../UI/head.jpg";
     },
     async handleSubmit() {
       console.log('Submitted data:', this.formData);
       this.showForm = false; // 切换到对话页面
-      let buffer = '你只需要回复图片，不回复文字。我是家长。孩子的姓名是'+this.formData.name+'，年龄是'+this.formData.age+'岁，'+this.formData.gender+'孩子，'+this.formData.identity+
+      let buffer = '我是家长。孩子的姓名是'+this.formData.name+'，年龄是'+this.formData.age+'岁，'+this.formData.gender+'孩子，'+this.formData.identity+
       '。画图：喜欢的形象'+this.formData.favoriteImage+
       '。画图：背景'+this.formData.background+
       '。故事情节是：'+this.formData.story+
-      '。请你扮演'+this.formData.name+'的角色，让孩子从中感受情感。';
-      this.messages.push({ id: this.id++, text: buffer, type: 'set' });
+      '。请你扮演'+this.formData.name+'的角色，让孩子从中感受'+this.formData.emotional+'。';
+      this.messages.push({ id: this.id++, text: buffer, type: 'set',avatar: this.userAvatar });
       this.scrollToBottom(); // 新增消息后滚动到底部
       this.isLoading = true; // 显示等待动画
 
@@ -459,7 +464,7 @@ export default {
   cursor: pointer;
 }
 
-.loading-spinner {
+/* .loading-spinner {
   border: 8px solid #f3f3f3;
   border-top: 8px solid #3498db;
   border-radius: 50%;
@@ -467,7 +472,7 @@ export default {
   height: 50px;
   animation: spin 2s linear infinite;
   margin: 20px auto;
-}
+} */
 
 /* .input-textarea {
   flex-grow: 1;
@@ -488,7 +493,7 @@ export default {
 
 .output-container {
   margin-top: 10px; /* 调整输入框的顶部间距 */
-  width: 100%;
+  width: 1600px;
   height: 600px;
   border: 1px solid #ccc;
   overflow-y: auto;
@@ -551,7 +556,7 @@ export default {
   cursor: pointer;
 }
 
-/* 等待动画
+/* 等待动画 */
 .loading-spinner {
   border: 8px solid #f3f3f3;
   border-top: 8px solid #3498db;
@@ -560,7 +565,7 @@ export default {
   height: 50px;
   animation: spin 2s linear infinite;
   margin: 20px auto;
-} */
+}
 
 @keyframes spin {
   0% { transform: rotate(0deg); }
