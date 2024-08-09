@@ -61,7 +61,7 @@
       </div>
       <div class="output-container" :style="{'background-image': 'url(' + backgroundUrl + ')'}">
         <div v-for="(message, index) in messages" :key="message.id" :ref="'message-' + index" :class="['message', message.type]">
-          <img :src=message.avatar class="message-avatar" />
+          <img :src=message.avatar class="message-avatar" :class="message.type === 'sent' ? 'avatar-right' : ''" />
           <div class="message-content"></div>
             <div class="message-text" v-if="message.type === 'sent'">{{ message.text }}</div>
             <div class="message-text" v-if="message.type === 'received'">{{ message.text }}</div>
@@ -412,6 +412,11 @@ export default {
   height: 40px;
   border-radius: 50%;
   margin-right: 10px;
+}
+
+.avatar-right {
+  order: 2;
+  margin-left: 10px;
 }
 
 .message-content {
