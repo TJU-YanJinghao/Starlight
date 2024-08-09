@@ -107,20 +107,22 @@ export default {
     },
     handleReset() {
       this.formData = {
-        name: '',
-        age: '',
-        gender: '',
-        identity: '',
-        favoriteImage: '',
-        background: '',
-        story: '',
-        emotional: ''
+        name: '马小',
+        age: '11',
+        gender: '男',
+        identity: '小学五年级的学生',
+        favoriteImage: '以小浣熊为主体，毛色为橙色，穿着蓝色的帽衫，戴着蓝色的帽子',
+        background: '发生在下雨的儿童游乐场',
+        story: '孩子和同学王明约好了周末一起去游乐场玩，但是周末突然下了暴雨，无法再去游乐场。请你扮演王明的角色',
+        emotional: '计划失败的失望和难过'
       };
+      this.userAvatar = "../../../UI/head.jpg";
+      this.id = 0;
     },
     async handleSubmit() {
       console.log('Submitted data:', this.formData);
       this.showForm = false; // 切换到对话页面
-      let buffer = `我是家长。孩子的姓名是${this.formData.name}，年龄是${this.formData.age}岁，${this.formData.gender}孩子，${this.formData.identity}。画图：喜欢的形象${this.formData.favoriteImage}。画图：背景${this.formData.background}。故事情节是：${this.formData.story}。让孩子从中感受${this.formData.emotional}。`;
+      let buffer = `我是家长。孩子的姓名是${this.formData.name}，年龄是${this.formData.age}岁，${this.formData.gender}孩子，${this.formData.identity}。画图：喜欢的形象${this.formData.favoriteImage}。画图：背景${this.formData.background}。故事情节是：${this.formData.story}，让孩子从中感受${this.formData.emotional}。`;
       this.isLoading = true; // 显示等待动画
 
       const url = 'https://open.oppomobile.com/agentplatform/app_api/chat';
@@ -261,13 +263,13 @@ export default {
     },
 
     async handleEmotionAnalysis() {
-      this.text = '开始情感分析。分析在上述模拟事件对话中想要表达的情感。并且列举出两种与该情感截然相反的情感。';
+      this.text = '开始情感分析。列举一种在上述模拟事件对话中想要表达的情感。并且列举出两种与该情感截然相反的情感。用1.   2.   3.    格式列举，共3条就可。';
       this.handleClick();
       setTimeout(() => {
-        this.text = '将上述几种情感画图。你只需要回复图片，不需要回复文字。';
+        this.text = '画三张图，分别表达上述三种情感。你只需要回复图片，不需要回复文字';
         this.handleClick();
         this.showEmotionButtons = true; // 显示情感按钮
-      }, 20000); // 延时20秒触发
+      }, 25000); // 延时25秒触发
     },
 
     handleEmotionButtonClick(message) {
@@ -422,13 +424,14 @@ export default {
 
 .input-container {
   display: flex;
+  height: 40px;
   width: 100%;
   margin-top: 70px;
 }
 
 .input-textarea {
   flex-grow: 1;
-  height: 60px;
+  height: 20px;
   width: calc(100% - 160px); /* 调整输入框的宽度以适应两个按钮 */
   padding: 10px;
   resize: none;
@@ -456,7 +459,7 @@ export default {
 
 .output-container {
   margin-top: 10px;
-  width: 1600px;
+  width: 1400px;
   height: 600px;
   border: 1px solid #ccc;
   overflow-y: auto;

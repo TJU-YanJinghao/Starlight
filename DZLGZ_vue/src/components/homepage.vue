@@ -14,7 +14,7 @@
       </div>
     </div>
 
-<!--     <div class="manual-login">
+    <!-- <div class="manual-login">
       <button @click="manualLogin">手动设置为已登录</button>
     </div> -->
 
