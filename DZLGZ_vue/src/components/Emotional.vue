@@ -257,7 +257,6 @@ export default {
         }
 
         this.messages.push({ id: this.id++, text: resultText, type: 'received', avatar: this.modelAvatar });
-        this.imgAvatar = this.modelAvatar;
       } catch (error) {
         console.error('There was a problem with your fetch operation:', error);
       } finally {
