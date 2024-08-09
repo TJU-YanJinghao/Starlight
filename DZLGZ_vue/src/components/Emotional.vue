@@ -20,23 +20,23 @@
         </div>
         <div class="form-group">
           <label>身份：</label>
-          <textarea v-model="formData.identity" ></textarea>
+          <textarea v-model="formData.identity"></textarea>
         </div>
         <div class="form-group">
           <label>喜欢的形象：</label>
-          <textarea v-model="formData.favoriteImage" ></textarea>
+          <textarea v-model="formData.favoriteImage"></textarea>
         </div>
         <div class="form-group">
           <label>背景：</label>
-          <textarea v-model="formData.background" ></textarea>
+          <textarea v-model="formData.background"></textarea>
         </div>
         <div class="form-group">
           <label>故事情节：</label>
-          <textarea v-model="formData.story" ></textarea>
+          <textarea v-model="formData.story"></textarea>
         </div>
         <div class="form-group">
           <label>感受：</label>
-          <textarea v-model="formData.emotional" ></textarea>
+          <textarea v-model="formData.emotional"></textarea>
         </div>
         <div class="button-group">
           <button type="button" @click="handleReset">默认</button>
@@ -57,11 +57,11 @@
       </div>
       <div class="output-container" :style="{'background-image': 'url(' + backgroundUrl + ')'}">
         <div v-for="(message, index) in messages" :key="message.id" :ref="'message-' + index" :class="['message', message.type]">
-          <img :src=message.avatar class="message-avatar" :class="message.type === 'sent' ? 'avatar-right' : ''" />
-          <div class="message-content"></div>
-            <div class="message-text" v-if="message.type === 'sent'">{{ message.text }}</div>
-            <div class="message-text" v-if="message.type === 'received'">{{ message.text }}</div>
-          <!-- <img class="message-image" v-if="message.type === 'image'" :src="message.url"  /> -->
+          <img :src="message.avatar" class="message-avatar" :class="message.type === 'sent' ? 'avatar-right' : ''" />
+          <div class="message-content">
+            <div class="message-text" v-if="message.text">{{ message.text }}</div>
+            <img class="message-image" v-if="message.url" :src="message.url" />
+          </div>
         </div>
         <div v-if="isLoading" class="loading-spinner"></div> <!-- 等待动画 -->
       </div>
@@ -79,7 +79,7 @@
 export default {
   data() {
     return {
-      showForm: true, // 用于控制页面显示
+      showForm: true, // 控制页面显示
       formData: {
         name: '',
         age: '',
@@ -89,22 +89,22 @@ export default {
         background: '',
         story: '',
         emotional: ''
-      },      
+      },
       text: '',
       messages: [],
-      isLoading: false, // 用于控制等待动画显示
+      isLoading: false, // 控制等待动画显示
       backgroundUrl: '', // 对话框背景图像的URL
       modelAvatar: '',
       userAvatar: "../../../UI/head.jpg", // 用户头像的URL
       id: 0,
-      showEmotionButtons: false, // 控制是否显示情感分析的三个圆形按钮
+      showEmotionButtons: false, // 控制情感分析的按钮显示
       emotionImages: [] // 存储大模型生成的三个情感图片的URL
     };
   },
   methods: {
     goHome() {
-          this.$router.push({ name: 'homepage' });
-        },
+      this.$router.push({ name: 'homepage' });
+    },
     handleReset() {
       this.formData = {
         name: '',
@@ -120,13 +120,7 @@ export default {
     async handleSubmit() {
       console.log('Submitted data:', this.formData);
       this.showForm = false; // 切换到对话页面
-      let buffer = '我是家长。孩子的姓名是'+this.formData.name+'，年龄是'+this.formData.age+'岁，'+this.formData.gender+'孩子，'+this.formData.identity+
-      '。画图：喜欢的形象'+this.formData.favoriteImage+
-      '。画图：背景'+this.formData.background+
-      '。故事情节是：'+this.formData.story+
-      '。让孩子从中感受'+this.formData.emotional+'。';
-      // this.messages.push({ id: this.id++, text: buffer, type: 'set',avatar: this.userAvatar });
-      this.scrollToBottom(); // 新增消息后滚动到底部
+      let buffer = `我是家长。孩子的姓名是${this.formData.name}，年龄是${this.formData.age}岁，${this.formData.gender}孩子，${this.formData.identity}。画图：喜欢的形象${this.formData.favoriteImage}。画图：背景${this.formData.background}。故事情节是：${this.formData.story}。让孩子从中感受${this.formData.emotional}。`;
       this.isLoading = true; // 显示等待动画
 
       const url = 'https://open.oppomobile.com/agentplatform/app_api/chat';
@@ -164,12 +158,10 @@ export default {
           const { done, value } = await reader.read();
           if (done) break;
           const chunk = decoder.decode(value);
-          console.log(chunk); // 调试信息
-
           buffer += chunk;
         }
+
         let lines = buffer.split('\n');
-        
         for (const line of lines) {
           if (line.trim().startsWith('data: ')) {
             const dataStr = line.trim().substring(6);
@@ -178,8 +170,7 @@ export default {
                 const data = JSON.parse(dataStr);
                 if (data.event === 'agent_message' && data.answer) {
                   resultText += data.answer;
-                }
-                else if(data.event === 'message_file' && data.url) {
+                } else if (data.event === 'message_file' && data.url) {
                   img_urls.push(data.url);
                 }
               } catch (e) {
@@ -188,10 +179,9 @@ export default {
             }
           }
         }
-        const imageUrl = img_urls[1];
-        this.backgroundUrl = imageUrl;
-        const avatarUrl = img_urls[0];
-        this.modelAvatar = avatarUrl;
+
+        this.backgroundUrl = img_urls[1];
+        this.modelAvatar = img_urls[0];
       } catch (error) {
         console.error('There was a problem with your fetch operation:', error);
       } finally {
@@ -202,7 +192,6 @@ export default {
     async handleClick() {
       if (this.text.trim() === '') return;
       this.messages.push({ id: this.id++, text: this.text, type: 'sent', avatar: this.userAvatar });
-      this.scrollToBottom(); // 新增消息后滚动到底部
       this.isLoading = true; // 显示等待动画
 
       const url = 'https://open.oppomobile.com/agentplatform/app_api/chat';
@@ -221,7 +210,7 @@ export default {
       this.text = '';
 
       try {
-        console.log('Sending request...'); // 调试信息
+        console.log('Sending request...');
         const response = await fetch(url, {
           method: 'POST',
           headers: headers,
@@ -241,12 +230,10 @@ export default {
           const { done, value } = await reader.read();
           if (done) break;
           const chunk = decoder.decode(value);
-          console.log(chunk); // 调试信息
-
           buffer += chunk;
         }
+
         let lines = buffer.split('\n');
-        
         for (const line of lines) {
           if (line.trim().startsWith('data: ')) {
             const dataStr = line.trim().substring(6);
@@ -255,8 +242,7 @@ export default {
                 const data = JSON.parse(dataStr);
                 if (data.event === 'agent_message' && data.answer) {
                   resultText += data.answer;
-                }
-                else if(data.event === 'message_file' && data.url) {
+                } else if (data.event === 'message_file' && data.url) {
                   this.emotionImages.push(data.url);
                 }
               } catch (e) {
@@ -265,8 +251,8 @@ export default {
             }
           }
         }
+
         this.messages.push({ id: this.id++, text: resultText, type: 'received', avatar: this.modelAvatar });
-        this.scrollToBottom(); // 新增消息后滚动到底部
       } catch (error) {
         console.error('There was a problem with your fetch operation:', error);
       } finally {
@@ -275,12 +261,13 @@ export default {
     },
 
     async handleEmotionAnalysis() {
-      // 模拟输入一段话，比如："请分析当前的情感状态。"
       this.text = '开始情感分析。分析在上述模拟事件对话中想要表达的情感。并且列举出两种与该情感截然相反的情感。';
-      this.handleClick(); // 触发发送
-      this.text = '将上述几种情感画图。你只需要回复图片，不需要回复文字';
-      setTimeout(this.handleClick, 20000);// 触发发送
-      this.showEmotionButtons = true; // 显示情感按钮
+      this.handleClick();
+      setTimeout(() => {
+        this.text = '将上述几种情感画图。你只需要回复图片，不需要回复文字。';
+        this.handleClick();
+        this.showEmotionButtons = true; // 显示情感按钮
+      }, 20000); // 延时20秒触发
     },
 
     handleEmotionButtonClick(message) {
@@ -290,7 +277,6 @@ export default {
     },
 
     handleEnterKey(event) {
-      // 阻止默认的换行行为
       event.preventDefault();
       this.handleClick();
     },
@@ -315,10 +301,10 @@ export default {
   width: 100%;
   height: 100%;
   background-image: url("../../../UI/background.png");
-  background-size: cover; /* 确保背景图保持比例 */
-  background-position: bottom; /* 保留下半部分 */
-  filter: blur(1.5px); /* 添加模糊效果 */
-  z-index: -1; /* 设置为最底层 */
+  background-size: cover;
+  background-position: bottom;
+  filter: blur(1.5px);
+  z-index: -1;
 }
 
 .app {
@@ -333,7 +319,7 @@ export default {
   margin: 0 auto;
   border: 1px solid #000;
   padding: 20px;
-  background-color: rgba(255, 255, 255, 0.8); /* 使表单背景半透明 */
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .form-group {
@@ -348,13 +334,13 @@ export default {
 .form-group input[type="text"],
 .form-group input[type="number"],
 .form-group textarea {
-  width: 100%; /* 确保输入框和文本域宽度为100% */
-  padding: 10px; /* 增加内边距 */
+  width: 100%;
+  padding: 10px;
   box-sizing: border-box;
-  height: auto; /* 自动调整高度 */
-  min-height: 40px; /* 最小高度 */
-  resize: vertical; /* 允许用户垂直调整大小 */
-  white-space: pre-wrap; /* 保留空白字符并自动换行 */
+  height: auto;
+  min-height: 40px;
+  resize: vertical;
+  white-space: pre-wrap;
 }
 
 .button-group {
@@ -370,9 +356,9 @@ export default {
 .chat-container {
   width: 600px;
   margin: 0 auto;
-  margin-top: 50px; /* 调整对话框的顶部间距 */
-  background-size: cover; /* 确保背景图片覆盖整个容器 */
-  background-position: center; /* 确保背景图片在容器中居中 */
+  margin-top: 50px;
+  background-size: cover;
+  background-position: center;
 }
 
 .messages {
@@ -380,20 +366,20 @@ export default {
   border: 1px solid #ccc;
   overflow-y: auto;
   padding: 10px;
-  background-color: rgba(255, 255, 255, 0.8); /* 使对话框背景半透明 */
+  background-color: rgba(255, 255, 255, 0.8);
 }
 
 .message {
   display: flex;
-  align-items: flex-start; /* 对齐消息和头像 */
+  align-items: flex-start;
   margin-bottom: 10px;
 }
 
-.message.user {
+.message.sent {
   justify-content: flex-end;
 }
 
-.message.bot {
+.message.received {
   justify-content: flex-start;
 }
 
@@ -401,7 +387,6 @@ export default {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  margin-right: 10px;
 }
 
 .avatar-right {
@@ -410,7 +395,7 @@ export default {
 }
 
 .message-content {
-  max-width: calc(100% - 50px); /* 留出头像的空间 */
+  max-width: calc(100% - 50px);
 }
 
 .message-text {
@@ -421,30 +406,30 @@ export default {
   border: 1px solid #ccc;
 }
 
-/* .message-image {
+.message-image {
   max-width: 60%;
   border-radius: 10px;
   border: 1px solid #ccc;
-} */
+}
 
-.message.user .message-text {
+.message.sent .message-text {
   background-color: #dcf8c6;
 }
 
-.message.bot .message-text {
+.message.received .message-text {
   background-color: #ffffff;
 }
 
 .input-container {
   display: flex;
   width: 100%;
-  margin-top: 70px; /* 调整输入框的顶部间距 */
+  margin-top: 70px;
 }
 
 .input-textarea {
   flex-grow: 1;
-  height: 60px; /* 调整输入框的高度 */
-  width: calc(100% - 80px); /* 调整输入框的宽度，留出按钮的位置 */
+  height: 60px;
+  width: calc(100% - 160px); /* 调整输入框的宽度以适应两个按钮 */
   padding: 10px;
   resize: none;
   border: 1px solid #ccc;
@@ -459,7 +444,7 @@ export default {
   cursor: pointer;
 }
 
-/* .loading-spinner {
+.loading-spinner {
   border: 8px solid #f3f3f3;
   border-top: 8px solid #3498db;
   border-radius: 50%;
@@ -467,69 +452,17 @@ export default {
   height: 50px;
   animation: spin 2s linear infinite;
   margin: 20px auto;
-} */
-
-/* .input-textarea {
-  flex-grow: 1;
-  height: 40px;
-  padding: 5px;
-  resize: none;
-  border: 1px solid #ccc;
 }
 
-.send-button {
-  width: 60px;
-  margin-left: 10px;
-  padding: 5px;
-  border: 1px solid #ccc;
-  background-color: white;
-  cursor: pointer;
-} */
-
 .output-container {
-  margin-top: 10px; /* 调整输入框的顶部间距 */
+  margin-top: 10px;
   width: 1600px;
-  height: 680px;
+  height: 600px;
   border: 1px solid #ccc;
   overflow-y: auto;
   padding: 10px;
   display: flex;
   flex-direction: column;
-}
-
-.message {
-  display: flex;
-  margin-bottom: 10px;
-}
-
-.message.sent {
-  justify-content: flex-end;
-}
-
-.message.received {
-  justify-content: flex-start;
-}
-
-.message-text {
-  max-width: 60%;
-  padding: 10px;
-  border-radius: 10px;
-  background-color: #f1f1f1;
-  border: 1px solid #ccc;
-}
-
-/* .message-image {
-  max-width: 60%;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-} */
-
-.message.sent .message-text {
-  background-color: #dcf8c6;
-}
-
-.message.received .message-text {
-  background-color: #ffffff;
 }
 
 .text {
@@ -544,7 +477,7 @@ export default {
 }
 
 .pos_2 {
-  margin-top: -10px; /* 调整输入框的顶部间距 */
+  margin-top: -10px;
   position: absolute;
   left: 3.76rem;
   top: 3.27rem;
@@ -552,14 +485,9 @@ export default {
 }
 
 /* 等待动画 */
-.loading-spinner {
-  border: 8px solid #f3f3f3;
-  border-top: 8px solid #3498db;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  animation: spin 2s linear infinite;
-  margin: 20px auto;
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
 /* 新增的情感按钮样式 */
@@ -567,18 +495,6 @@ export default {
   display: flex;
   justify-content: space-around;
   margin-top: 20px;
-}
-
-.circle-button {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background-color: #3498db;
-  color: white;
-  border: none;
-  cursor: pointer;
-  text-align: center;
-  line-height: 50px;
 }
 
 .image-button {
@@ -593,10 +509,5 @@ export default {
   height: 50px;
   border-radius: 50%;
   border: 2px solid #3498db;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
 }
 </style>
