@@ -52,12 +52,8 @@
           class="input-textarea"
           @keydown.enter="handleEnterKey"
         ></textarea>
-        <button
-          class="send-button"
-          @click="handleClick"
-        >
-          发送
-        </button>
+        <button class="send-button" @click="handleClick">发送</button>
+        <button class="emotion-analysis-button" @click="handleEmotionAnalysis">情感分析</button>
       </div>
       <div class="output-container" :style="{'background-image': 'url(' + backgroundUrl + ')'}">
         <div v-for="(message, index) in messages" :key="message.id" :ref="'message-' + index" :class="['message', message.type]">
@@ -68,6 +64,12 @@
           <!-- <img class="message-image" v-if="message.type === 'image'" :src="message.url"  /> -->
         </div>
         <div v-if="isLoading" class="loading-spinner"></div> <!-- 等待动画 -->
+      </div>
+      <!-- 底部的三个圆形按钮 -->
+      <div class="emotion-buttons" v-if="showEmotionButtons">
+        <button class="image-button" v-for="(imgUrl, index) in emotionImages" :key="index" @click="handleEmotionButtonClick(`我认为情感应该是第${index+1}张图片的表达。请你作为情感导师，对我的判断做出评价。（正确答案是第一张图片）`)">
+          <img :src="imgUrl" alt="Emotion Image" class="emotion-image"/>
+        </button>
       </div>
     </div>
   </div>
@@ -94,7 +96,9 @@ export default {
       backgroundUrl: '', // 对话框背景图像的URL
       modelAvatar: '',
       userAvatar: "../../../UI/head.jpg", // 用户头像的URL
-      id: 0
+      id: 0,
+      showEmotionButtons: false, // 控制是否显示情感分析的三个圆形按钮
+      emotionImages: [] // 存储大模型生成的三个情感图片的URL
     };
   },
   methods: {
@@ -112,7 +116,6 @@ export default {
         story: '',
         emotional: ''
       };
-      this.userAvatar="../../../UI/head.jpg";
     },
     async handleSubmit() {
       console.log('Submitted data:', this.formData);
@@ -185,13 +188,6 @@ export default {
             }
           }
         }
-
-        // this.messages.push({ id: this.id++, text: resultText, type: 'received' });
-        // this.scrollToBottom(); // 新增消息后滚动到底部
-        // for(const img_url of img_urls) {
-        //   this.messages.push({ id: this.id++, url: img_url, type: 'image' });
-        //   this.scrollToBottom(); // 新增消息后滚动到底部
-        // }
         const imageUrl = img_urls[1];
         this.backgroundUrl = imageUrl;
         const avatarUrl = img_urls[0];
@@ -240,7 +236,6 @@ export default {
         const decoder = new TextDecoder('utf-8');
         let resultText = '';
         let buffer = '';
-        let img_urls = [];
 
         while (true) {
           const { done, value } = await reader.read();
@@ -251,9 +246,6 @@ export default {
           buffer += chunk;
         }
         let lines = buffer.split('\n');
-          
-        // 保留最后一行，可能是不完整的行
-        // buffer = lines.pop();
         
         for (const line of lines) {
           if (line.trim().startsWith('data: ')) {
@@ -265,7 +257,7 @@ export default {
                   resultText += data.answer;
                 }
                 else if(data.event === 'message_file' && data.url) {
-                  img_urls.push(data.url);
+                  this.emotionImages.push(data.url);
                 }
               } catch (e) {
                 console.error('JSON解析错误：', e);
@@ -273,32 +265,30 @@ export default {
             }
           }
         }
-        // 处理可能剩余的不完整行
-        // if (buffer.trim().startsWith('data: ')) {
-        //   const dataStr = buffer.trim().substring(6);
-        //   if (dataStr !== 'ping') {
-        //     try {
-        //       const data = JSON.parse(dataStr);
-        //       if (data.event === 'agent_message' && data.answer) {
-        //         resultText += data.answer;
-        //       }
-        //     } catch (e) {
-        //       console.error('JSON解析错误：', e);
-        //     }
-        //   }
-        // }
         this.messages.push({ id: this.id++, text: resultText, type: 'received', avatar: this.modelAvatar });
         this.scrollToBottom(); // 新增消息后滚动到底部
-        // for(const img_url of img_urls) {
-        //   this.messages.push({ id: this.id++, url: img_url, type: 'image' });
-        //   this.scrollToBottom(); // 新增消息后滚动到底部
-        // }
       } catch (error) {
         console.error('There was a problem with your fetch operation:', error);
       } finally {
         this.isLoading = false; // 隐藏等待动画
       }
     },
+
+    async handleEmotionAnalysis() {
+      // 模拟输入一段话，比如："请分析当前的情感状态。"
+      this.text = '开始情感分析。分析在上述模拟事件对话中想要表达的情感。并且列举出两种与该情感截然相反的情感。';
+      this.handleClick(); // 触发发送
+      this.text = '将上述几种情感画图。你只需要回复图片，不需要回复文字';
+      setTimeout(this.handleClick, 20000);// 触发发送
+      this.showEmotionButtons = true; // 显示情感按钮
+    },
+
+    handleEmotionButtonClick(message) {
+      this.text = message;
+      this.handleClick(); // 触发发送
+      this.showEmotionButtons = false; // 隐藏情感按钮
+    },
+
     handleEnterKey(event) {
       // 阻止默认的换行行为
       event.preventDefault();
@@ -460,10 +450,10 @@ export default {
   border: 1px solid #ccc;
 }
 
-.send-button {
-  width: 80px; /* 调整按钮宽度以配合输入框 */
+.send-button, .emotion-analysis-button {
+  width: 80px;
   margin-left: 10px;
-  padding: 10px; /* 调整按钮的内边距 */
+  padding: 10px;
   border: 1px solid #ccc;
   background-color: white;
   cursor: pointer;
@@ -570,6 +560,39 @@ export default {
   height: 50px;
   animation: spin 2s linear infinite;
   margin: 20px auto;
+}
+
+/* 新增的情感按钮样式 */
+.emotion-buttons {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.circle-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  line-height: 50px;
+}
+
+.image-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.emotion-image {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #3498db;
 }
 
 @keyframes spin {
