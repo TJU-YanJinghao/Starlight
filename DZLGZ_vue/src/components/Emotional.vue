@@ -60,7 +60,6 @@
           <img :src="message.avatar" class="message-avatar" :class="message.type === 'sent' ? 'avatar-right' : ''" />
           <div class="message-content">
             <div class="message-text" v-if="message.text">{{ message.text }}</div>
-            <img class="message-image" v-if="message.url" :src="message.url" />
           </div>
         </div>
         <div v-if="isLoading" class="loading-spinner"></div> <!-- 等待动画 -->
@@ -98,7 +97,8 @@ export default {
       userAvatar: "../../../UI/head.jpg", // 用户头像的URL
       id: 0,
       showEmotionButtons: false, // 控制情感分析的按钮显示
-      emotionImages: [] // 存储大模型生成的三个情感图片的URL
+      emotionImages: [], // 存储大模型生成的三个情感图片的URL
+      conversation_id: ''
     };
   },
   methods: {
@@ -174,6 +174,8 @@ export default {
                   resultText += data.answer;
                 } else if (data.event === 'message_file' && data.url) {
                   img_urls.push(data.url);
+                } else if (data.event === 'message_end') {
+                  this.conversation_id = data.conversation_id;
                 }
               } catch (e) {
                 console.error('JSON解析错误：', e);
@@ -204,7 +206,7 @@ export default {
       const body = JSON.stringify({
         query: this.text,
         response_mode: 'streaming',
-        conversation_id: '',
+        conversation_id: this.conversation_id,
         user: '用户唯一标识',
         files: []
       });
@@ -255,6 +257,7 @@ export default {
         }
 
         this.messages.push({ id: this.id++, text: resultText, type: 'received', avatar: this.modelAvatar });
+        this.imgAvatar = this.modelAvatar;
       } catch (error) {
         console.error('There was a problem with your fetch operation:', error);
       } finally {
