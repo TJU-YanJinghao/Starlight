@@ -59,39 +59,7 @@ export default {
       }
     },
     async register() {
-      if (this.password !== this.confirmPassword) {
-        alert("密码和确认密码不匹配！");
-        return;
-      }
-      try {
-        // 发送登录请求
-        // 使用v-model绑定的数据
-        const response = await axios.post("http://localhost:5000/api/register", {
-          username: this.username,
-          account: this.account,
-          password: this.password,
-        });
-        if (response.status === 201) {
-          // 登录成功，可以进行路由跳转或其他操作
-          if (this.$route.path !== "/login") {
-            this.$router.push("/login");
-          }
-        } 
-      } catch (error) {// 错误处理，例如网络错误提示
-        // 错误处理，例如网络错误提示
-        if (error.response) {
-          if (error.response.status === 400) {
-            alert("缺少必要字段！");
-          } else if (error.response.status === 409) {
-            alert("该手机号已注册！");
-          } else {
-            alert("注册失败，请稍后再试");
-          }
-        } else {
-          console.error('注册请求失败:', error);
-          alert('注册请求失败，请稍后再试');
-        }
-      }
+      this.$router.push("/login");
     },
   }
 };

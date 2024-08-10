@@ -51,37 +51,9 @@ export default {
       }
     },
     async login() {
-      try {
-        // 发送登录请求
-        // 使用v-model绑定的数据
-        const response = await axios.post("http://localhost:5000/api/login", {
-          account: this.account,
-          password: this.password,
-        });
-        if (response.status === 200) {
-          // 使用输入的 account 作为用户信息存储
-          const user = { account: this.account };
-          localStorage.setItem('user', JSON.stringify(user));
-          this.$router.push('/');
-        } else {
-          alert("登录失败，请检查您的账号和密码！");
-        }
-      } 
-      catch (error) {
-        // 第一个Promise rejection
-        if (error.response.status === 401) {
-          alert("账号不存在或密码错误！");
-        } 
-        // 第二个Promise rejection
-        else if (error.response.status === 400) {
-          alert("请填写账号和密码！");
-        } 
-        // 处理其他类型的错误
-        else {
-          console.error("Error:", error);
-          alert("发生了一个错误，请稍后重试！");
-        }
-      }
+      const user = { account: this.account };
+      localStorage.setItem('user', JSON.stringify(user));
+      this.$router.push('/');
     }
   }
 };
