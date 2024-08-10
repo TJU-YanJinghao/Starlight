@@ -370,7 +370,7 @@ form button:hover {
 
 .home-link .link {
   color: #ffffff; /* 颜色使用白色 */
-  font-size: 2rem; /* 增大字体大小 */
+  font-size: 3rem; /* 增大字体大小 */
   font-family: "hongleixingshu"; /* 使用"hongleixingshu"字体 */
   text-decoration: none;
 }

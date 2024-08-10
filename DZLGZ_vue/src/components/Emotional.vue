@@ -2,7 +2,9 @@
   <div class="app">
     <!-- 背景图容器，使用CSS背景图 -->
     <div class="background-image"></div>
-    <span class="text text_3 pos_2" @click="goHome">《主页</span>
+    <div class="home-link">
+      <router-link to="/" class="font link">《首页</router-link>
+    </div>
     <div v-if="showForm" class="container">
       <form @submit.prevent="handleSubmit">
         <div class="form-group">
@@ -57,12 +59,14 @@
       </div>
       <div class="output-container" :style="{'background-image': 'url(' + backgroundUrl + ')'}">
         <div v-for="(message, index) in messages" :key="message.id" :ref="'message-' + index" :class="['message', message.type]">
-          <img :src="message.avatar" class="message-avatar" :class="message.type === 'sent' ? 'avatar-right' : ''" />
+          <img src="../../../UI/head.jpg" alt="Avatar" class="message-avatar" :class="message.type === 'sent' ? 'avatar-right' : ''" />
           <div class="message-content">
             <div class="message-text" v-if="message.text">{{ message.text }}</div>
           </div>
         </div>
+        <div class="loading-container">
         <div v-if="isLoading" class="loading-spinner"></div> <!-- 等待动画 -->
+      </div>
       </div>
       <!-- 底部的三个圆形按钮 -->
       <div class="emotion-buttons" v-if="showEmotionButtons">
@@ -193,9 +197,11 @@ export default {
       }
     },
 
-    async handleClick() {
+    async handleClick(flag = 0) {
       if (this.text.trim() === '') return;
-      this.messages.push({ id: this.id++, text: this.text, type: 'sent', avatar: this.userAvatar });
+      if (flag === 0) {
+        this.messages.push({ id: this.id++, text: this.text, type: 'sent', avatar: this.userAvatar });
+    }
       this.isLoading = true; // 显示等待动画
 
       const url = 'https://open.oppomobile.com/agentplatform/app_api/chat';
@@ -204,7 +210,7 @@ export default {
         'Authorization': 'Bearer 5MfWH1dNeBUdpBvQ'
       };
       const body = JSON.stringify({
-        query: this.text,
+        query: (this.id === 1?'接下来，开始对话，请回复文字。我是儿童。':'') + this.text,
         response_mode: 'streaming',
         conversation_id: this.conversation_id,
         user: '用户唯一标识',
@@ -255,8 +261,9 @@ export default {
             }
           }
         }
-
-        this.messages.push({ id: this.id++, text: resultText, type: 'received', avatar: this.modelAvatar });
+        if (flag !== 1){
+          this.messages.push({ id: this.id++, text: resultText, type: 'received', avatar: this.modelAvatar });
+        }
       } catch (error) {
         console.error('There was a problem with your fetch operation:', error);
       } finally {
@@ -266,17 +273,17 @@ export default {
 
     async handleEmotionAnalysis() {
       this.text = '开始情感分析。列举一种在上述模拟事件对话中想要表达的情感。并且列举出两种与该情感截然相反的情感。用1.   2.   3.    格式列举，共3条就可。';
-      this.handleClick();
+      this.handleClick(1);
       setTimeout(() => {
         this.text = '画三张图，分别表达上述三种情感。你只需要回复图片，不需要回复文字';
-        this.handleClick();
+        this.handleClick(1);
         this.showEmotionButtons = true; // 显示情感按钮
       }, 25000); // 延时25秒触发
     },
 
     handleEmotionButtonClick(message) {
       this.text = message;
-      this.handleClick(); // 触发发送
+      this.handleClick(2); // 触发发送
       this.showEmotionButtons = false; // 隐藏情感按钮
     },
 
@@ -311,6 +318,20 @@ export default {
   z-index: -1;
 }
 
+/* 添加首页链接的样式 */
+.home-link {
+  position: absolute;
+  top: 2rem;
+  left: 3rem;
+}
+
+.home-link .link {
+  color: #ffffff; /* 颜色使用白色 */
+  font-size: 3rem; /* 增大字体大小 */
+  font-family: "hongleixingshu"; /* 使用"hongleixingshu"字体 */
+  text-decoration: none;
+}
+
 .app {
   display: flex;
   flex-direction: column;
@@ -319,7 +340,7 @@ export default {
 }
 
 .container {
-  width: 400px;
+  width: 70%;
   margin: 0 auto;
   border: 1px solid #000;
   padding: 20px;
@@ -328,23 +349,35 @@ export default {
 
 .form-group {
   margin-bottom: 20px;
+  font-size: 30px; /* 调大文字字号 */
 }
 
 .form-group label {
   display: block;
   margin-bottom: 5px;
+  font-size: 30px; /* 增大标签文字的字体大小 */
+  cursor: pointer; /* 鼠标悬停时显示手型 */
+  margin-right: 20px; /* 增加标签之间的间距 */
 }
 
 .form-group input[type="text"],
 .form-group input[type="number"],
 .form-group textarea {
   width: 100%;
-  padding: 10px;
+  padding: 12px; /* 增加内边距 */
   box-sizing: border-box;
   height: auto;
   min-height: 40px;
   resize: vertical;
   white-space: pre-wrap;
+  font-size: 20px; /* 增大输入框中文字的字体大小 */
+  line-height: 1.5; /* 调整行间距，确保文本易读 */
+}
+
+.form-group input[type="radio"] {
+  width: 20px;  /* 增大按钮的宽度 */
+  height: 20px; /* 增大按钮的高度 */
+  margin-right: 10px; /* 增加按钮和文本之间的间距 */
 }
 
 .button-group {
@@ -352,6 +385,23 @@ export default {
   justify-content: space-between;
 }
 
+.button-group button {
+  justify-content: space-between;
+  align-items: center;
+  width: 150px; /* 增加按钮的宽度 */
+  height: 50px; /* 增加按钮的高度 */
+  padding: 10px; /* 调整内边距，确保按钮内容不会被压缩 */
+  font-size: 18px; /* 增大按钮文字的字体大小 */
+  border-radius: 8px; /* 调整按钮的圆角 */
+  background-color: #007fe7; /* 设置按钮的背景颜色 */
+  color: white; /* 设置按钮文字的颜色 */
+  cursor: pointer; /* 鼠标悬停时显示手型 */
+  transition: background-color 0.3s; /* 增加背景色的过渡效果 */
+}
+
+.button-group button:hover {
+  background-color: #00b9e7; /* 鼠标悬停时改变背景颜色 */
+}
 .button-group button {
   width: 100px;
   padding: 5px;
@@ -388,18 +438,19 @@ export default {
 }
 
 .message-avatar {
-  width: 40px;
-  height: 40px;
+  width: 70px;
+  height: 70px;
   border-radius: 50%;
+  margin-right: 10px; /* 头像右侧的空隙 */
 }
 
 .avatar-right {
   order: 2;
-  margin-left: 10px;
+  margin-left: 10px; /* 头像左侧的空隙，当头像在右侧时 */
 }
 
 .message-content {
-  max-width: calc(100% - 50px);
+  max-width: calc(80%);
 }
 
 .message-text {
@@ -408,12 +459,8 @@ export default {
   border-radius: 10px;
   background-color: #f1f1f1;
   border: 1px solid #ccc;
-}
-
-.message-image {
-  max-width: 60%;
-  border-radius: 10px;
-  border: 1px solid #ccc;
+  font-size: 30px; /* 调大文字字号 */
+  line-height: 1.5; /* 增加行间距，确保文字易读 */
 }
 
 .message.sent .message-text {
@@ -433,34 +480,45 @@ export default {
 
 .input-textarea {
   flex-grow: 1;
-  height: 20px;
-  width: calc(100% - 160px); /* 调整输入框的宽度以适应两个按钮 */
+  height: 40px;
+  width: calc(100% - 220px); /* 调整输入框的宽度以适应两个按钮 */
   padding: 10px;
   resize: none;
   border: 1px solid #ccc;
+  font-size: 20px; /* 调大文字字号 */
 }
 
 .send-button, .emotion-analysis-button {
-  width: 80px;
+  height: 60px;
+  width: 110px;
   margin-left: 10px;
   padding: 10px;
   border: 1px solid #ccc;
-  background-color: white;
+  background-color: #00ffee; /* 鼠标悬停时改变背景颜色 */
   cursor: pointer;
+  font-size: 20px; /* 调大文字字号 */
+  border-radius: 10px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%; /* 让容器撑满父元素的高度 */
+  width: 100%; /* 让容器撑满父元素的宽度 */
 }
 
 .loading-spinner {
+  width: 50px;
+  height: 50px;
   border: 8px solid #f3f3f3;
   border-top: 8px solid #3498db;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
   animation: spin 2s linear infinite;
-  margin: 20px auto;
 }
 
 .output-container {
-  margin-top: 10px;
+  margin-top: 30px;
   width: 1400px;
   height: 600px;
   border: 1px solid #ccc;
@@ -510,8 +568,8 @@ export default {
 }
 
 .emotion-image {
-  width: 50px;
-  height: 50px;
+  width: 150px;
+  height: 150px;
   border-radius: 50%;
   border: 2px solid #3498db;
 }
