@@ -55,7 +55,7 @@
           @keydown.enter="handleEnterKey"
         ></textarea>
         <button class="send-button" @click="handleClick">发送</button>
-        <button class="emotion-analysis-button" @click="handleEmotionAnalysis">情感分析</button>
+        <button class="emotion-analysis-button" @click="handleEmotionAnalysis">行为分析</button>
       </div>
       <div class="output-container" :style="{'background-image': 'url(' + backgroundUrl + ')'}">
         <div v-for="(message, index) in messages" :key="message.id" :ref="'message-' + index" :class="['message', message.type]">
