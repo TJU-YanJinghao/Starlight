@@ -372,6 +372,8 @@ export default {
   white-space: pre-wrap;
   font-size: 20px; /* 增大输入框中文字的字体大小 */
   line-height: 1.5; /* 调整行间距，确保文本易读 */
+  text-align: center; /* 文字水平居中 */
+  font-family: "bahnschriftlight";
 }
 
 .form-group input[type="radio"] {
