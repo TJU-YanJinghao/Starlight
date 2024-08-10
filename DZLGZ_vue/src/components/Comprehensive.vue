@@ -261,8 +261,14 @@ export default {
             }
           }
         }
-        if (flag !== 1){
+        if (flag === 3) {
+          this.messages.push({ id: this.id++, text: '请从以下三张图片中选择你认为正确的情感表达。', type: 'received', avatar: this.modelAvatar });
+        }
+        else if (flag !== 1){
           this.messages.push({ id: this.id++, text: resultText, type: 'received', avatar: this.modelAvatar });
+        }
+        if (flag === 4){
+          this.messages.push({ id: this.id++, text: '请从以上三种行为中选择你认为正确的行为表达。', type: 'received', avatar: this.modelAvatar });
         }
       } catch (error) {
         console.error('There was a problem with your fetch operation:', error);
@@ -276,7 +282,7 @@ export default {
       this.handleClick(1);
       setTimeout(() => {
         this.text = '画三张图，分别表达上述三种情感。你只需要回复图片，不需要回复文字';
-        this.handleClick(1);
+        this.handleClick(3);
         this.showEmotionButtons = true; // 显示情感按钮
       }, 25000); // 延时25秒触发
     },
@@ -287,7 +293,7 @@ export default {
       this.showEmotionButtons = false; // 隐藏情感按钮
       setTimeout(() => {
         this.text = '开始行为分析。列举出一种在上述模拟事件中用户应该做出的正确行为。并且列举出两种不积极的错误行为。要求以第一人称“我”对行为做出详细的描述，用1.   2.   3.    格式列举，直接列举。不要直接说明“正确行为”或错误行为。';
-        this.handleClick(2);
+        this.handleClick(4);
       }, 15000); // 延时15秒触发
     },
 
