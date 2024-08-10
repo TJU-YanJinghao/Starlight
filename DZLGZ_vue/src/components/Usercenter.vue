@@ -9,7 +9,7 @@
       <div class="sidebar">
         <ul>
           <li><a @click="showSection('comments')">个人信息</a></li>
-          <li><a @click="showSection('changePassword')">编辑</a></li>
+          <li><a @click="showSection('changePassword')">修改密码</a></li>
           <li><a @click="showSection('changePassword')">登出</a></li>
         </ul>
       </div>
