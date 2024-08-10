@@ -59,7 +59,7 @@
       </div>
       <div class="output-container" :style="{'background-image': 'url(' + backgroundUrl + ')'}">
         <div v-for="(message, index) in messages" :key="message.id" :ref="'message-' + index" :class="['message', message.type]">
-          <img src="../../../UI/head.jpg" alt="Avatar" class="message-avatar" :class="message.type === 'sent' ? 'avatar-right' : ''" />
+          <img :src="message.avatar" alt="" class="message-avatar" :class="message.type === 'sent' ? 'avatar-right' : ''" />
           <div class="message-content">
             <div class="message-text" v-if="message.text">{{ message.text }}</div>
           </div>
@@ -98,7 +98,7 @@ export default {
       isLoading: false, // 控制等待动画显示
       backgroundUrl: '', // 对话框背景图像的URL
       modelAvatar: '',
-      userAvatar: "../../../UI/head.jpg", // 用户头像的URL
+      userAvatar: "/static/img/head.24e92ab.jpg", // 用户头像的URL
       id: 0,
       showEmotionButtons: false, // 控制情感分析的按钮显示
       emotionImages: [], // 存储大模型生成的三个情感图片的URL
@@ -120,7 +120,7 @@ export default {
         story: '孩子和同学王明约好了周末一起去游乐场玩，但是周末突然下了暴雨，无法再去游乐场。请你扮演王明的角色',
         emotional: '计划失败的失望和难过'
       };
-      this.userAvatar = "../../../UI/head.jpg";
+      this.userAvatar = "/static/img/head.24e92ab.jpg";
       this.id = 0;
     },
     async handleSubmit() {
@@ -438,6 +438,7 @@ export default {
 }
 
 .message-avatar {
+  display: block; /* 确保头像是块级元素 */
   width: 70px;
   height: 70px;
   border-radius: 50%;
