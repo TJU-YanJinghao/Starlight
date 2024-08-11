@@ -16,14 +16,14 @@
       <div class="main">
         <div v-show="currentSection === 'comments'" class="section">
           <h2>昵称：Star</h2>
-          <p style="font-size: 20px;" v-if="comments.length === 0">性别：男 年龄：9岁 </p>
-          <p style="font-size: 20px;margin-bottom: 30px;" v-if="comments.length === 0">姓名：马小 年级：小学五年级 </p>
-          <p style="font-size: 20px;" v-if="comments.length === 0">喜欢的形象：</p>
-          <p style="font-size: 20px;margin-bottom: 30px;" v-if="comments.length === 0">小浣熊为主体，毛色为橙色，穿着蓝色的帽衫，戴着蓝色的帽子。 </p>
-          <p style="font-size: 20px;" v-if="comments.length === 0">默认场景：</p>
-          <p style="font-size: 20px;margin-bottom: 30px;" v-if="comments.length === 0">下雨的儿童游乐场。 </p>
-          <p style="font-size: 20px;" v-if="comments.length === 0">默认情节：</p>
-          <p style="font-size: 20px;" v-if="comments.length === 0">孩子和同学王明约好了周末一起去游乐场玩，但是周末突然下了暴雨，无法再去游乐场。 </p>
+          <p style="font-size: 25px;" v-if="comments.length === 0">性别：男 年龄：9岁 </p>
+          <p style="font-size: 25px;margin-bottom: 50px;" v-if="comments.length === 0">姓名：马小 年级：小学五年级 </p>
+          <p style="font-size: 25px;" v-if="comments.length === 0">喜欢的形象：</p>
+          <p style="font-size: 25px;margin-bottom: 50px;" v-if="comments.length === 0">小浣熊为主体，毛色为橙色，穿着蓝色的帽衫，戴着蓝色的帽子。 </p>
+          <p style="font-size: 25px;" v-if="comments.length === 0">默认场景：</p>
+          <p style="font-size: 25px;margin-bottom: 50px;" v-if="comments.length === 0">下雨的儿童游乐场。 </p>
+          <p style="font-size: 25px;" v-if="comments.length === 0">默认情节：</p>
+          <p style="font-size: 25px;" v-if="comments.length === 0">孩子和同学王明约好了周末一起去游乐场玩，但是周末突然下了暴雨，无法再去游乐场。 </p>
           <img src="../../../UI/head.jpg" alt="Profile Image" style="width: 200px; height: 200px; border-radius: 50%; position: absolute; top: 50px; right: 50px;">
            <ul class="comments-list">
                   <li v-for="comment in comments" :key="comment.id" class="comment-item">
@@ -259,6 +259,7 @@ body * {
   border-right: 1px solid #ccc;
   display: flex;
   flex-direction: column;
+  font-size: 25px;
 }
 
 .sidebar ul {
@@ -337,6 +338,7 @@ form label {
     margin-top: 1em;
     font-size: 20px;
     font-family: "hongleixingshu";
+    font-size: 25px;
 }
 
 form input, form textarea, form select {
