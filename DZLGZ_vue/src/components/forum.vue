@@ -233,7 +233,7 @@ export default {
 
 .comment-content {
   border: 2px solid rgba(0, 123, 255, 0.8); /* 边框加粗，颜色为半透明蓝色 */
-  background-color: rgba(0, 123, 255, 0.1); /* 半透明蓝色填充背景 */
+  background-color: rgb(255, 255, 255); /* 半透明蓝色填充背景 */
   flex-grow: 1;
   border-radius: 12px; /* 边角圆滑 */
   padding: 10px; /* 内边距，确保内容不会贴边 */
