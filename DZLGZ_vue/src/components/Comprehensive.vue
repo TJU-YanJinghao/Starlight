@@ -47,7 +47,7 @@
       </form>
     </div>
     <div v-else>
-      <div class="input-container">
+      <div v-if="!showEmotionButtons" class="input-container">
         <textarea
           v-model="text"
           placeholder="请在此处输入……"
@@ -486,9 +486,11 @@ export default {
 
 .input-container {
   display: flex;
-  height: 40px;
-  width: 100%;
-  margin-top: 70px;
+  width: 95%;
+  padding: 20px 0px;
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
 }
 
 .input-textarea {
@@ -531,7 +533,7 @@ export default {
 }
 
 .output-container {
-  margin-top: 30px;
+  margin-top: 70px;
   width: 1400px;
   height: 600px;
   border: 1px solid #ccc;
@@ -539,6 +541,7 @@ export default {
   padding: 10px;
   display: flex;
   flex-direction: column;
+  flex-grow: 1;
 }
 
 .text {
