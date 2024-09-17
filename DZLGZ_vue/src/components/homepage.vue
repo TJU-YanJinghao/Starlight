@@ -60,8 +60,8 @@
       <!-- 页脚区域，包含开发团队信息 -->
       <div class="footer">
         <!-- 开发团队信息，每行独占一行 -->
-        <span class="font_2">开发团队: 同济大学嘉景远征队</span>
-        <span class="font_2">联系我们: 1215648314@qq.com</span>
+        <span class="font_2">开发团队: ****************</span>
+        <span class="font_2">联系我们: ***************</span>
       </div>
     </div>
   </div>
